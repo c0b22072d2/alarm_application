@@ -3,12 +3,9 @@ package com.example.alarm_app
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.media.MediaPlayer
 import android.util.Log
 
 class AlarmReceiver : BroadcastReceiver() {
-    private var mediaPlayer: MediaPlayer? = null
-
     override fun onReceive(context: Context?, intent: Intent?) {
         Log.d("AlarmReceiver", "onReceive called")
         if (context == null) {
@@ -17,18 +14,13 @@ class AlarmReceiver : BroadcastReceiver() {
         }
 
         try {
-            // MediaPlayerの初期化
-            mediaPlayer = MediaPlayer.create(context, R.raw.alarm)
-            mediaPlayer?.apply {
-                setOnCompletionListener { mp ->
-                    mp.release()
-                    Log.d("AlarmReceiver", "MediaPlayer released")
-                }
-                start()
-                Log.d("AlarmReceiver", "MediaPlayer started")
+            val mainActivityIntent = Intent(context, MainActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                putExtra("start_alarm", true)
             }
+            context.startActivity(mainActivityIntent)
         } catch (e: Exception) {
-            Log.e("AlarmReceiver", "Error playing alarm sound", e)
+            Log.e("AlarmReceiver", "Error starting alarm activity", e)
         }
     }
 }
