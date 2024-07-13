@@ -7,19 +7,17 @@
     android:padding="16dp"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Set Alarm"
-        android:textSize="24sp"
-        android:layout_gravity="center_horizontal"
-        android:paddingBottom="16dp"/>
-
     <Button
         android:id="@+id/button_set_alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Set Alarm"
-        android:layout_gravity="center_horizontal" />
+        android:text="Set Alarm" />
+
+    <Button
+        android:id="@+id/button_stop_alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop Alarm"
+        android:visibility="gone" /> <!-- 初期は非表示 -->
 
 </LinearLayout>
