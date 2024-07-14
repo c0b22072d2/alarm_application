@@ -20,4 +20,14 @@
         android:text="Stop Alarm"
         android:visibility="gone" /> <!-- 初期は非表示 -->
 
+    <LinearLayout
+        android:id="@+id/alarm_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:textSize="24sp"
+        android:textColor="@color/custom_red"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp" /> <!--        android:id="@+id/text_alarm_time"-->
+
 </LinearLayout>
