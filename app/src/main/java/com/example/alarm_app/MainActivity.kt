@@ -16,6 +16,7 @@ import java.util.Calendar
 
 class MainActivity : AppCompatActivity(), TimePickerFragment.TimePickerDialogListener {
     private lateinit var buttonStopAlarm: Button
+    private lateinit var buttonSnoozeAlarm: Button
     private lateinit var textAlarmTime: TextView
     private var mediaPlayer: MediaPlayer? = null
 
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.TimePickerDialogLis
 
         val buttonSetAlarm: Button = findViewById(R.id.button_set_alarm)
         buttonStopAlarm = findViewById(R.id.button_stop_alarm)
+        buttonSnoozeAlarm = findViewById(R.id.button_snooze_alarm)
         textAlarmTime = findViewById(R.id.text_alarm_time)
 
         buttonSetAlarm.setOnClickListener {
@@ -33,6 +35,10 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.TimePickerDialogLis
 
         buttonStopAlarm.setOnClickListener {
             stopAlarm()
+        }
+
+        buttonSnoozeAlarm.setOnClickListener {
+            snoozeAlarm()
         }
     }
 
@@ -71,12 +77,35 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.TimePickerDialogLis
         mediaPlayer?.release()
         mediaPlayer = null
         buttonStopAlarm.visibility = Button.GONE
+        buttonSnoozeAlarm.visibility = Button.GONE
+        textAlarmTime.text = "No alarm set"
         Toast.makeText(this, "Alarm stopped", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun snoozeAlarm() {
+        val snoozeTimeInMillis = 5 * 60 * 1000 // 5 minutes in milliseconds
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, AlarmReceiver::class.java)
+
+        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        } else {
+            PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
+
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis() + snoozeTimeInMillis
+        }
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+        Toast.makeText(this, "Alarm snoozed for 5 minutes", Toast.LENGTH_SHORT).show()
+        stopAlarm()
     }
 
     // アラームが鳴ったときに呼ばれるメソッド
     fun onAlarmStart() {
         buttonStopAlarm.visibility = Button.VISIBLE
+        buttonSnoozeAlarm.visibility = Button.VISIBLE
         mediaPlayer = MediaPlayer.create(this, R.raw.alarm)
         mediaPlayer?.apply {
             isLooping = true // ループ再生を設定
@@ -84,7 +113,8 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.TimePickerDialogLis
                 mp.release()
                 mediaPlayer = null
                 buttonStopAlarm.visibility = Button.GONE
-
+                buttonSnoozeAlarm.visibility = Button.GONE
+                textAlarmTime.text = "No alarm set"
             }
             start()
         }

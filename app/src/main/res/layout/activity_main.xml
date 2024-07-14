@@ -29,6 +29,17 @@
         android:layout_gravity="center"
         android:padding="16dp" />
 
+    <TextView
+        android:id="@+id/text_alarm_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No alarm set"
+        android:textSize="24sp"
+        android:textColor="@color/custom_red"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp" />
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -62,23 +73,4 @@
         android:layout_gravity="center"
         android:padding="16dp"
         android:layout_marginBottom="16dp" />
-
-    <LinearLayout
-        android:id="@+id/alarm_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center">
-
-        <TextView
-            android:id="@+id/text_alarm_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="No alarm set"
-            android:textSize="24sp"
-            android:textColor="@color/custom_red"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp" />
-    </LinearLayout>
-
 </LinearLayout>
