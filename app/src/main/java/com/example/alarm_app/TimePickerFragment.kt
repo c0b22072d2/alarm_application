@@ -23,7 +23,6 @@ class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener 
         // 新しいTimePickerDialogインスタンスを作成して返す
         return TimePickerDialog(activity, this, hour, minute, DateFormat.is24HourFormat(activity))
     }
-
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         // 呼び出し元のアクティビティに時間を設定する
         val activity = activity as TimePickerDialogListener
